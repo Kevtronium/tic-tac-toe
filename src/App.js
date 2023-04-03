@@ -1,9 +1,10 @@
 import React from 'react';
+import PlayerForm from './components/PlayerForm/PlayerForm.jsx';
 
 function App({ name }) {
   return (
-    <div>
-      <h1 className='text-4xl text-white bg-black'> Hello {name}</h1>
+    <div className='h-screen relative'>
+      <PlayerForm> </PlayerForm>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import PlayerEntry from '../PlayerEntry/PlayerEntry.jsx';
 
 function PlayerForm() {
   return (
-    <div className='absolute top-0 w-full h-full'>
+    <div className=' hidden absolute top-0 w-full h-full'>
       <div className='z-10 absolute top-1/3 right-[40%]'>
         <form className='flex flex-col gap-6 p-6 border-solid border-2 border-black rounded-md'>
           <h1 className='font-bold text-2xl text-center'>Enter Players</h1>

@@ -7,11 +7,13 @@ function App({ name }) {
   const [board, setBoard] = useState(Array(9).fill(''));
   const [currPlayer, setCurrPlayer] = useState('player1');
   const [turn, setTurn] = useState(1);
-
-  const players = {
-    player1: { name: 'James', symbol: 'X' },
-    player2: { name: 'Frank', symbol: 'O' },
-  };
+  const [players, setPlayers] = useState({
+    player1: { name: '', symbol: 'X' },
+    player2: { name: '', symbol: 'O' },
+  });
+  const [isPlayer1X, setIsPlayer1X] = useState(true);
+  const [isFormActive, setIsFormActive] = useState(true);
+  const [isBoardActive, setIsBoardActive] = useState(false);
 
   function isWinningGroup(tileArr) {
     let isWinner = false;
@@ -83,10 +85,56 @@ function App({ name }) {
     }
   }
 
+  function handleNameChange(playerName, playerNum) {
+    const newPlayersData = { ...players };
+
+    if (playerNum === '1') {
+      newPlayersData.player1.name = playerName;
+    } else {
+      newPlayersData.player2.name = playerName;
+    }
+    setPlayers(newPlayersData);
+  }
+
+  function handlePlayerBtnClick(playerNum, btnSymbol) {
+    const newPlayersData = { ...players };
+
+    if (playerNum === '1') {
+      newPlayersData.player2.symbol = newPlayersData.player1.symbol;
+      newPlayersData.player1.symbol = btnSymbol;
+    } else {
+      newPlayersData.player1.symbol = newPlayersData.player2.symbol;
+      newPlayersData.player2.symbol = btnSymbol;
+    }
+    setPlayers(newPlayersData);
+
+    if (newPlayersData.player1.symbol === 'X') {
+      setIsPlayer1X(true);
+    } else {
+      setIsPlayer1X(false);
+    }
+  }
+
+  function handleSubmit() {
+    setIsFormActive(false);
+    setIsBoardActive(true);
+  }
+
   return (
     <div className='h-screen flex items-center justify-center relative'>
-      <PlayerForm> </PlayerForm>
-      <GameBoard board={board} tileClickHandler={handleClick}></GameBoard>
+      <PlayerForm
+        playersData={players}
+        isPlayer1X={isPlayer1X}
+        nameChangeHandler={handleNameChange}
+        handlePlayerBtnClick={handlePlayerBtnClick}
+        isActive={isFormActive}
+        handleSubmit={handleSubmit}
+      ></PlayerForm>
+      <GameBoard
+        board={board}
+        tileClickHandler={handleClick}
+        isActive={isBoardActive}
+      ></GameBoard>
     </div>
   );
 }

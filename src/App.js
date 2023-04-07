@@ -14,6 +14,7 @@ function App({ name }) {
   const [isPlayer1X, setIsPlayer1X] = useState(true);
   const [isFormActive, setIsFormActive] = useState(true);
   const [isBoardActive, setIsBoardActive] = useState(false);
+  const [isTileDisabled, setIsTileDisabled] = useState(false);
 
   function isWinningGroup(tileArr) {
     let isWinner = false;
@@ -74,8 +75,10 @@ function App({ name }) {
 
     if (winner === 'player1' || winner === 'player2') {
       console.log(`Congrats to ${winner}`);
+      setIsTileDisabled(true);
     } else if (winner === '' && turn === 9) {
       console.log(`It's a tie!`);
+      setIsTileDisabled(true);
     } else {
       if (currPlayer === 'player1') {
         setCurrPlayer('player2');
@@ -134,6 +137,8 @@ function App({ name }) {
         board={board}
         tileClickHandler={handleClick}
         isActive={isBoardActive}
+        isTileDisabled={isTileDisabled}
+        currPlayerInfo={players[currPlayer]}
       ></GameBoard>
     </div>
   );

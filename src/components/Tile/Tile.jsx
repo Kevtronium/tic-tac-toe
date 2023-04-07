@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Tile({ symbol, tileID, clickHandler }) {
+function Tile({ symbol, tileID, clickHandler, isDisabled }) {
   return (
     <button
       className='w-full h-full border-solid border-2 border-black font-bold text-9xl'
@@ -9,6 +9,7 @@ function Tile({ symbol, tileID, clickHandler }) {
           clickHandler(tileID);
         }
       }}
+      disabled={isDisabled}
     >
       {symbol}
     </button>

@@ -15,6 +15,7 @@ function App({ name }) {
   const [isFormActive, setIsFormActive] = useState(true);
   const [isBoardActive, setIsBoardActive] = useState(false);
   const [isTileDisabled, setIsTileDisabled] = useState(false);
+  const [endState, setEndState] = useState({ isGameOver: false, msg: '' });
 
   function isWinningGroup(tileArr) {
     let isWinner = false;
@@ -70,14 +71,17 @@ function App({ name }) {
     let newBoard = [...board];
     newBoard[tileID] = players[currPlayer].symbol;
     setBoard(newBoard);
-    let winner = getWinner(newBoard);
+    const winner = getWinner(newBoard);
     setTurn(turn + 1);
 
     if (winner === 'player1' || winner === 'player2') {
-      console.log(`Congrats to ${winner}`);
+      setEndState({
+        isGameOver: true,
+        msg: `${players[winner].name} Wins!`,
+      });
       setIsTileDisabled(true);
     } else if (winner === '' && turn === 9) {
-      console.log(`It's a tie!`);
+      setEndState({ isGameOver: true, msg: `It's a tie!` });
       setIsTileDisabled(true);
     } else {
       if (currPlayer === 'player1') {
@@ -123,6 +127,36 @@ function App({ name }) {
     setIsBoardActive(true);
   }
 
+  function handlePlayAgain() {
+    setTurn(1);
+    setIsTileDisabled(false);
+    setBoard(Array(9).fill(''));
+    let winner = '';
+
+    if (endState.msg.includes('Wins')) {
+      if (endState.msg.includes(players.player1.name)) {
+        winner = 'player1';
+      } else {
+        winner = 'player2';
+      }
+    }
+
+    if (winner === 'player1') {
+      setCurrPlayer('player2');
+    } else if (winner === 'player2') {
+      setCurrPlayer('player1');
+    } else {
+      const randomNum = Math.floor(Math.random() * 2 + 1);
+      if (randomNum === 1) {
+        setCurrPlayer('player1');
+      } else {
+        setCurrPlayer('player2');
+      }
+    }
+
+    setEndState({ isGameOver: false, msg: '' });
+  }
+
   return (
     <div className='h-screen flex items-center justify-center relative'>
       <PlayerForm
@@ -139,6 +173,8 @@ function App({ name }) {
         isActive={isBoardActive}
         isTileDisabled={isTileDisabled}
         currPlayerInfo={players[currPlayer]}
+        endState={endState}
+        handlePlayAgain={handlePlayAgain}
       ></GameBoard>
     </div>
   );

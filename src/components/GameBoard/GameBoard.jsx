@@ -1,5 +1,6 @@
 import React from 'react';
 import Tile from '../Tile/Tile.jsx';
+import GameOver from '../GameOver/GameOver.jsx';
 
 function GameBoard({
   board,
@@ -7,6 +8,8 @@ function GameBoard({
   isActive,
   isTileDisabled,
   currPlayerInfo,
+  endState,
+  handlePlayAgain,
 }) {
   const lowerLastChar = currPlayerInfo.name
     .charAt(currPlayerInfo.name.length - 1)
@@ -28,10 +31,17 @@ function GameBoard({
         isActive ? '' : 'invisible'
       }`}
     >
-      <div className='flex flex-col text-center font-bold justify-center items-center gap-1'>
-        <h1 className='text-4xl'>{playerText}</h1>
-        <div className='w-1/2 text-2xl'>{directionText}</div>
-      </div>
+      {!endState.isGameOver ? (
+        <div className='flex flex-col text-center font-bold justify-center items-center gap-1'>
+          <h1 className='text-4xl'>{playerText}</h1>
+          <div className='w-1/2 text-2xl'>{directionText}</div>
+        </div>
+      ) : (
+        <GameOver
+          endState={endState}
+          handlePlayAgain={handlePlayAgain}
+        ></GameOver>
+      )}
       <div className={`w-full h-full grid grid-cols-3 auto-rows-fr`}>
         {tileList}
       </div>
